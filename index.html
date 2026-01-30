@@ -3,178 +3,760 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>高考数学 · 思路拆解示例</title>
+<title>高考数学 · 三问思维导图式引导（概率）</title>
 <style>
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-  background: #0f172a;
-  color: #e5e7eb;
-  margin: 0;
-  padding: 20px;
-}
-.card {
-  max-width: 720px;
-  margin: auto;
-  background: #020617;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 0 1px #1e293b;
-}
-h1 {
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-.step {
-  display: none;
-  animation: fadeIn 0.4s ease forwards;
-}
-.step.active {
-  display: block;
-}
-.question {
-  font-size: 18px;
-  margin-bottom: 16px;
-}
-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 16px;
-  margin-top: 12px;
-}
-button:active {
-  transform: scale(0.98);
-}
-.hint {
-  font-size: 14px;
-  color: #94a3b8;
-  margin-top: 8px;
-}
-.formula {
-  background: #020617;
-  border: 1px solid #1e293b;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 12px;
-  font-family: monospace;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+  :root{
+    --bg:#0b1220; --panel:#0f172a; --panel2:#0b1020;
+    --border:#1f2a44; --text:#e5e7eb; --muted:#94a3b8;
+    --brand:#2563eb; --ok:#16a34a; --bad:#ef4444; --warn:#f59e0b;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:18px;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(180deg, var(--bg), #050914);
+    color:var(--text);
+  }
+  .wrap{max-width:900px; margin:0 auto;}
+  .top{
+    background:rgba(2,6,23,.9);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 0 0 1px rgba(31,42,68,.3);
+  }
+  h1{margin:0 0 10px 0; font-size:18px; letter-spacing:.2px;}
+  .sub{color:var(--muted); font-size:13px; line-height:1.5}
+  .grid{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  @media(min-width:820px){
+    .grid{grid-template-columns: 1fr 1fr;}
+  }
+
+  .card{
+    background:rgba(2,6,23,.85);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+  }
+  .card h2{margin:0 0 8px 0; font-size:16px;}
+  .tabs{
+    margin-top:12px;
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .tab{
+    border:1px solid var(--border);
+    background:rgba(15,23,42,.7);
+    color:var(--text);
+    padding:8px 10px;
+    border-radius:10px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .tab.active{
+    border-color:rgba(37,99,235,.9);
+    box-shadow:0 0 0 2px rgba(37,99,235,.25) inset;
+  }
+
+  .checklist{
+    margin-top:12px;
+    display:grid;
+    gap:10px;
+  }
+  .item{
+    border:1px dashed rgba(148,163,184,.35);
+    border-radius:12px;
+    padding:12px;
+    background:rgba(15,23,42,.35);
+  }
+  .item .hd{
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:6px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:18px; height:18px; border-radius:6px;
+    background:rgba(148,163,184,.18);
+    border:1px solid rgba(148,163,184,.25);
+    font-size:12px;
+  }
+  .badge.ok{background:rgba(22,163,74,.18); border-color:rgba(22,163,74,.35)}
+  .item .title{font-size:14px; font-weight:600;}
+  .item .body{color:var(--muted); font-size:13px; line-height:1.55; white-space:pre-wrap;}
+
+  .main{
+    margin-top:14px;
+    background:rgba(2,6,23,.9);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+  }
+  .stepbar{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+    color:var(--muted);
+    font-size:13px;
+  }
+  .prog{
+    flex:1;
+    height:10px;
+    border-radius:999px;
+    background:rgba(148,163,184,.15);
+    border:1px solid rgba(148,163,184,.15);
+    overflow:hidden;
+  }
+  .prog > div{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, rgba(37,99,235,.9), rgba(59,130,246,.5));
+  }
+
+  .qtitle{font-size:16px; font-weight:700; margin:6px 0 10px;}
+  .qtext{font-size:15px; line-height:1.6; margin:0 0 12px; color:var(--text)}
+  .hint{
+    margin-top:8px;
+    padding:10px 12px;
+    border-radius:12px;
+    background:rgba(245,158,11,.10);
+    border:1px solid rgba(245,158,11,.25);
+    color:#fcd34d;
+    font-size:13px;
+    display:none;
+    white-space:pre-wrap;
+  }
+  .hint.show{display:block}
+  .choices{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+  .choice{
+    text-align:left;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:rgba(15,23,42,.55);
+    color:var(--text);
+    padding:10px 12px;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .choice:hover{border-color:rgba(148,163,184,.45)}
+  .inputRow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+  input{
+    flex:1;
+    min-width:180px;
+    padding:10px 12px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:rgba(15,23,42,.65);
+    color:var(--text);
+    font-size:14px;
+    outline:none;
+  }
+  .btns{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:12px;
+  }
+  button{
+    border:none;
+    border-radius:12px;
+    padding:10px 12px;
+    font-size:14px;
+    cursor:pointer;
+    color:white;
+    background:var(--brand);
+  }
+  button.secondary{
+    background:rgba(148,163,184,.18);
+    color:var(--text);
+    border:1px solid rgba(148,163,184,.25);
+  }
+  button.ghost{
+    background:transparent;
+    border:1px solid rgba(148,163,184,.25);
+    color:var(--muted);
+  }
+  .msg{
+    margin-top:10px;
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.55;
+    white-space:pre-wrap;
+  }
+  .msg.ok{color:#86efac}
+  .msg.bad{color:#fca5a5}
+  .math{
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    background:rgba(148,163,184,.10);
+    border:1px solid rgba(148,163,184,.18);
+    padding:8px 10px;
+    border-radius:12px;
+    color:#dbeafe;
+    margin:10px 0;
+    white-space:pre-wrap;
+  }
+  .footerNote{
+    margin-top:10px;
+    color:rgba(148,163,184,.75);
+    font-size:12px;
+    line-height:1.5;
+  }
 </style>
 </head>
 
 <body>
-<div class="card">
-  <h1>高考数学 · 思路拆解演示</h1>
+<div class="wrap">
 
-  <div class="step active">
-    <div class="question">
-      🎯 场景：每一球甲赢的概率是 p，乙赢是 1-p。<br><br>
-      “甲至少领先 2 分”是什么意思？
+  <div class="top">
+    <h1>高考数学 · 概率题（3小问）——思维导图式引导</h1>
+    <div class="sub">
+      设每球甲胜概率 p(>1/2)，乙胜 q=1-p。独立。<br/>
+      P_k：打完 k 球后“甲比乙至少多2分”的概率；q_k：打完 k 球后“乙比甲至少多2分”的概率。
     </div>
-    <div class="hint">👉 把“分数”翻译成“赢的局数差”</div>
-    <button onclick="next()">我知道了</button>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="checklist" id="checklist"></div>
   </div>
 
-  <div class="step">
-    <div class="question">
-      设打完 k 个球，甲赢了 x 个球。<br><br>
-      甲领先乙 ≥ 2 分，用不等式怎么表示？
+  <div class="main">
+    <div class="stepbar">
+      <div id="stepLabel">—</div>
+      <div class="prog"><div id="progBar"></div></div>
+      <div id="stepCount">—</div>
     </div>
-    <div class="formula">
-      x − (k − x) ≥ 2
-    </div>
-    <button onclick="next()">继续</button>
-  </div>
 
-  <div class="step">
-    <div class="question">
-      化简这个不等式，会得到什么？
-    </div>
-    <div class="formula">
-      2x ≥ k + 2
-    </div>
-    <button onclick="next()">继续</button>
-  </div>
+    <div class="qtitle" id="qTitle"></div>
+    <div class="qtext" id="qText"></div>
 
-  <div class="step">
-    <div class="question">
-      注意：x 是什么？
-    </div>
-    <div class="hint">
-      👉 x 是“赢的局数”，只能取整数
-    </div>
-    <div class="formula">
-      x ≥ (k + 2) / 2 → 向上取整
-    </div>
-    <button onclick="next()">明白了</button>
-  </div>
+    <div class="math" id="mathBox" style="display:none;"></div>
 
-  <div class="step">
-    <div class="question">
-      举个具体例子：<br><br>
-      当 k = 3 时，甲至少要赢几局？
-    </div>
-    <div class="formula">
-      (3 + 2) / 2 = 2.5 → 最小整数是 3
-    </div>
-    <button onclick="next()">继续</button>
-  </div>
+    <div class="choices" id="choices" style="display:none;"></div>
 
-  <div class="step">
-    <div class="question">
-      那“甲在 3 个球中赢 3 局”的概率是多少？
+    <div class="inputRow" id="inputRow" style="display:none;">
+      <input id="userInput" placeholder="输入你的答案（支持 p^3、4p^3q+p^4、2/3 这类形式）" />
+      <button onclick="submitInput()">提交</button>
     </div>
-    <div class="formula">
-      p × p × p = p³
-    </div>
-    <button onclick="next()">继续</button>
-  </div>
 
-  <div class="step">
-    <div class="question">
-      ⭐ 核心思想（最重要）：<br><br>
-      “首次出现甲领先 2 分”
+    <div class="btns">
+      <button class="secondary" onclick="prevStep()">上一步</button>
+      <button onclick="nextStep()">下一步</button>
+      <button class="ghost" onclick="toggleHint()">提示</button>
+      <button class="ghost" onclick="resetCurrent()">重置本小问</button>
     </div>
-    <div class="hint">
-      必须同时满足：<br>
-      1️⃣ 第 k 球后已领先 ≥ 2 分<br>
-      2️⃣ 第 k−1 球后还没领先 ≥ 2 分
-    </div>
-    <button onclick="next()">完成</button>
-  </div>
 
-  <div class="step">
-    <div class="question">
-      🎉 恭喜！<br><br>
-      你已经掌握了这类题的“思路骨架”：
-    </div>
-    <div class="hint">
-      • 现实语言 → 数学条件<br>
-      • 找“阈值”<br>
-      • 注意整数<br>
-      • 再翻译成概率<br>
-      • 最后处理“首次发生”
+    <div class="hint" id="hintBox"></div>
+    <div class="msg" id="msgBox"></div>
+
+    <div class="footerNote">
+      设计目标：每一步只压一个“关键转念”，避免长篇过程；每小问结束后，上方清单会写入“关键点+结论”。
     </div>
   </div>
 
 </div>
 
 <script>
-let index = 0;
-const steps = document.querySelectorAll(".step");
+/** -----------------------------
+ * 数据：三小问引导（严格步数）
+ * Q1 <= 7, Q2 <= 10, Q3 <= 15
+ * ----------------------------- **/
 
-function next() {
-  if (index < steps.length - 1) {
-    steps[index].classList.remove("active");
-    index++;
-    steps[index].classList.add("active");
+const modules = [
+  {
+    id:"q1",
+    name:"(1) 求 P3, P4",
+    maxSteps:7,
+    summaryTitle:"第(1)问：固定k → 转成“甲赢局数阈值” → 二项分布求和",
+    summaryBody:"",
+    done:false,
+    steps:[
+      {
+        title:"第(1)问 · Step 1/6：把“领先2分”翻译成局数差",
+        text:"打完 k 球，设甲赢了 x 球。‘甲至少领先2分’等价于哪条不等式？",
+        type:"choice",
+        choices:[
+          {t:"x - (k-x) ≥ 2", ok:true, exp:"对：得分差=赢局数差。"},
+          {t:"x + (k-x) ≥ 2", ok:false, exp:"这是总局数，不是分差。"},
+          {t:"x/(k-x) ≥ 2", ok:false, exp:"题目是差，不是比。"}
+        ],
+        hint:"关键是：赢一球=1分，输=0分，所以得分差=赢球数差。"
+      },
+      {
+        title:"第(1)问 · Step 2/6：解出 x 的阈值（先不管整数）",
+        text:"把 x - (k-x) ≥ 2 化简，得到 x ≥ ？",
+        type:"input",
+        check:(v)=> normalize(v)===normalize("(k+2)/2") || normalize(v)===normalize("0.5(k+2)") ,
+        okMsg:"对：x ≥ (k+2)/2。",
+        badMsg:"提示：把 x-(k-x) 展开：x-k+x。",
+        hint:"x - (k-x)=2x-k，所以 2x-k ≥2 ⇒ x ≥ (k+2)/2。"
+      },
+      {
+        title:"第(1)问 · Step 3/6：整数意识（向上取整）",
+        text:"x 是赢的局数，只能取整数。正确做法是：x ≥ ceil((k+2)/2)。这一步先记住规则即可。",
+        type:"info",
+        hint:"以后遇到“至少/至多 + 整数变量”，第一反应：取整（ceil / floor）。"
+      },
+      {
+        title:"第(1)问 · Step 4/6：求 P3",
+        text:"k=3 时，ceil((k+2)/2)=ceil(2.5)=3。\n所以 P3 等于哪一个？",
+        type:"choice",
+        choices:[
+          {t:"P3 = p^3", ok:true, exp:"对：3局全赢。"},
+          {t:"P3 = 3p^2q", ok:false, exp:"这是赢2局的概率，但领先2分要求赢3局。"},
+          {t:"P3 = p^2", ok:false, exp:"少考虑了一局且不独立乘。"}
+        ],
+        hint:"k=3 要领先≥2，只能是 3:0。"
+      },
+      {
+        title:"第(1)问 · Step 5/6：求 P4 的阈值",
+        text:"k=4 时，ceil((k+2)/2)=ceil(3)=3。\n所以要领先≥2，甲至少赢几局？",
+        type:"choice",
+        choices:[
+          {t:"至少赢 3 局", ok:true, exp:"对：3:1 或 4:0。"},
+          {t:"至少赢 2 局", ok:false, exp:"2:2 分差0，不够。"},
+          {t:"只能赢 4 局", ok:false, exp:"3:1 也满足领先2分。"}
+        ],
+        hint:"k=4：分差≥2 ⇒ 甲赢3或4局。"
+      },
+      {
+        title:"第(1)问 · Step 6/6：写出 P4",
+        text:"把“赢3局或4局”翻译成二项分布概率，P4 = ？（任写一种等价形式即可）",
+        type:"input",
+        check:(v)=> {
+          const s=normalize(v);
+          return s===normalize("4p^3q+p^4") || s===normalize("p^3(4q+p)") || s===normalize("4p^3-3p^4");
+        },
+        okMsg:"正确：P4 = 4p^3q + p^4（也等价于 p^3(4q+p)=4p^3-3p^4）。",
+        badMsg:"提示：赢3局：C(4,3)p^3q；赢4局：p^4；相加。",
+        hint:"二项分布：Pr(X=3)=C(4,3)p^3q；Pr(X=4)=p^4。"
+      }
+    ],
+    finish:()=>{
+      modules[0].done=true;
+      modules[0].summaryBody =
+`关键翻译：领先≥2分 ⇔ x-(k-x)≥2 ⇔ x≥ceil((k+2)/2)
+P3：k=3 ⇒ x≥3 ⇒ P3=p^3
+P4：k=4 ⇒ x≥3 ⇒ P4=C(4,3)p^3q + p^4 = 4p^3q+p^4 (=4p^3-3p^4)`;
+    }
+  },
+
+  {
+    id:"q2",
+    name:"(2) 已知比值求 p",
+    maxSteps:10,
+    summaryTitle:"第(2)问：先写差分 → 化简成 (p/q)^2 → 直接解 p",
+    summaryBody:"",
+    done:false,
+    steps:[
+      {
+        title:"第(2)问 · Step 1/8：先把 q3, q4 写出来",
+        text:"q_k 是“乙领先≥2分”的概率。\n类比第(1)问：q3 和 q4 分别等于？",
+        type:"choice",
+        choices:[
+          {t:"q3=q^3，q4=4q^3p+q^4", ok:true, exp:"对：把 p、q 对调即可。"},
+          {t:"q3=3q^2p，q4=q^4", ok:false, exp:"q3 要领先≥2，只能 3:0。"},
+          {t:"q3=q^3，q4=q^4", ok:false, exp:"k=4 时 3:1 也满足。"}
+        ],
+        hint:"和 P3/P4 完全同构：把 p 换成 q（同时 q=1-p）。"
+      },
+      {
+        title:"第(2)问 · Step 2/8：写出差分 p4-p3",
+        text:"已知 P3=p^3，P4=4p^3q+p^4。\n那么 P4 - P3 = ?（写到“可看出能约掉东西”的程度就好）",
+        type:"choice",
+        choices:[
+          {t:"P4-P3 = 3p^3q", ok:true, exp:"对：4p^3q+p^4-p^3 = 3p^3q（因为 p^4=p^3·p，且 q=1-p）。"},
+          {t:"P4-P3 = p^4", ok:false, exp:"少减了 p^3，也没合并项。"},
+          {t:"P4-P3 = 4p^3q", ok:false, exp:"这是 P4 里的一项，不是差。"}
+        ],
+        hint:"把 P4 写成 p^3(4q+p)。再减 p^3。"
+      },
+      {
+        title:"第(2)问 · Step 3/8：写出差分 q4-q3",
+        text:"同理 q3=q^3，q4=4q^3p+q^4。\n那么 q4 - q3 = ?",
+        type:"choice",
+        choices:[
+          {t:"q4-q3 = 3pq^3", ok:true, exp:"对：4q^3p+q^4-q^3=3pq^3。"},
+          {t:"q4-q3 = 3q^3p^2", ok:false, exp:"多乘了一个 p。"},
+          {t:"q4-q3 = q^4", ok:false, exp:"少减了 q^3。"}
+        ],
+        hint:"与上一步完全对称。"
+      },
+      {
+        title:"第(2)问 · Step 4/8：把比值化简",
+        text:"题目给：(P4-P3)/(q4-q3)=4。\n代入你得到的结果，左边化简成什么？",
+        type:"choice",
+        choices:[
+          {t:"(p/q)^2", ok:true, exp:"对： (3p^3q)/(3pq^3)=p^2/q^2=(p/q)^2。"},
+          {t:"p/q", ok:false, exp:"还差一个平方。"},
+          {t:"p^2+q^2", ok:false, exp:"这不是分式约简。"}
+        ],
+        hint:"注意幂次：p^3q / (p q^3) = p^2/q^2。"
+      },
+      {
+        title:"第(2)问 · Step 5/8：解 p/q",
+        text:"既然 (p/q)^2 = 4，且 p>q（因为 p>1/2），那么 p/q = ?",
+        type:"choice",
+        choices:[
+          {t:"2", ok:true, exp:"对：取正根。"},
+          {t:"-2", ok:false, exp:"概率比值不可能为负。"},
+          {t:"±2", ok:false, exp:"题目给 p>1/2，直接锁定正根。"}
+        ],
+        hint:"p,q>0 且 p>q，所以比值>1。"
+      },
+      {
+        title:"第(2)问 · Step 6/8：由 p=2q 解 p",
+        text:"p/q=2 ⇒ p=2q。\n又 q=1-p。\n求 p = ?（写分数）",
+        type:"input",
+        check:(v)=> normalize(v)==="2/3",
+        okMsg:"正确：p = 2/3。",
+        badMsg:"提示：p=2(1-p) ⇒ p=2-2p ⇒ 3p=2 ⇒ p=2/3。",
+        hint:"用 q=1-p 代入 p=2q。"
+      },
+      {
+        title:"第(2)问 · Step 7/8：一句话总结“套路”",
+        text:"这一问的核心套路，用一句话概括是什么？",
+        type:"choice",
+        choices:[
+          {t:"先写出 P3,P4,q3,q4，再把差分比值化成 (p/q)^2", ok:true, exp:"对，这样几乎不用展开。"},
+          {t:"直接把 p 代成 0.6 试数", ok:false, exp:"这不是稳定方法。"},
+          {t:"先求导再判断", ok:false, exp:"不相关。"}
+        ],
+        hint:"“差分”常常能约掉很多东西。"
+      },
+      {
+        title:"第(2)问 · Step 8/8：最终答案核对",
+        text:"最终答案：p = 2/3。你可以继续下一问了。",
+        type:"info",
+        hint:"如果你能把第(1)问的 P3/P4 类比到 q3/q4，这问就非常短。"
+      }
+    ],
+    finish:()=>{
+      modules[1].done=true;
+      modules[1].summaryBody =
+`先类比得：q3=q^3，q4=4q^3p+q^4
+差分：P4-P3=3p^3q；q4-q3=3pq^3
+比值：(P4-P3)/(q4-q3)=p^2/q^2=(p/q)^2=4
+因 p>q ⇒ p/q=2 ⇒ p=2(1-p) ⇒ p=2/3`;
+    }
+  },
+
+  {
+    id:"q3",
+    name:"(3) 证明不等式链",
+    maxSteps:15,
+    summaryTitle:"第(3)问：看 D_k=P_k-q_k；偶数项=“正差的概率优势”；边界项更偏向 p>q ⇒ 形成夹逼",
+    summaryBody:"",
+    done:false,
+    steps:[
+      {
+        title:"第(3)问 · Step 1/12：先定义一个更好用的量",
+        text:"令 D_k = P_k - q_k。\n题目要证明的就是：对任意 m，D_{2m+1} < D_{2m} < D_{2m+2}。",
+        type:"info",
+        hint:"把复杂符号变成一个序列 D_k，很多证明就变成“比较相邻项”。"
+      },
+      {
+        title:"第(3)问 · Step 2/12：用“赢局数 X”来写 D_k",
+        text:"设 X ~ Bin(k,p) 表示 k 球中甲赢的局数。\nP_k = Pr(X ≥ ceil((k+2)/2))。\nq_k = Pr(X ≤ floor((k-2)/2))。\n所以 D_k 是“右尾概率 - 左尾概率”。",
+        type:"info",
+        hint:"P 是偏右尾（甲大胜），q 是偏左尾（乙大胜）。p>1/2 时右尾更大。"
+      },
+      {
+        title:"第(3)问 · Step 3/12：抓住‘边界最关键’",
+        text:"比较 D_{2m} 与 D_{2m+1}：\n二者差别主要来自“中间附近”的那些情况（领先只有1分或0分）。",
+        type:"info",
+        hint:"直觉：奇数局会出现 ±1 这种“差一点到2分”的情况，让 D_{2m+1} 被削弱。"
+      },
+      {
+        title:"第(3)问 · Step 4/12：把 D_{2m} 写成配对求和（核心转念）",
+        text:"对 k=2m，P_{2m} 是 X≥m+1，q_{2m} 是 X≤m-1。\n把 j 与 2m-j 配对，可把 D_{2m} 写成一堆形如：\nC(2m,j)(p^j q^{2m-j} - p^{2m-j} q^j) 的和。",
+        type:"info",
+        hint:"配对的意义：同一个组合数，比较 p 与 q 的幂次谁更大。"
+      },
+      {
+        title:"第(3)问 · Step 5/12：为什么每个配对项都是正的？",
+        text:"当 j>m 时：p^j q^{2m-j} 与 p^{2m-j} q^j 比较。\n因为 p>q，且 p 的指数在前者更大，所以前者更大 ⇒ 差为正。",
+        type:"choice",
+        choices:[
+          {t:"因为 p>q 且 j>m，所以 p 的幂更占优", ok:true, exp:"对，这就是“配对项为正”的理由。"},
+          {t:"因为组合数更大", ok:false, exp:"组合数相同，是在比较幂次。"},
+          {t:"因为 q=1-p", ok:false, exp:"关键是 p>q，不是代数恒等式。"}
+        ],
+        hint:"把比值写成 (p/q)^{2j-2m}，指数为正 ⇒ >1。"
+      },
+      {
+        title:"第(3)问 · Step 6/12：推出 D_{2m} > D_{2m+1} 的核心点",
+        text:"奇数 k=2m+1 时，‘领先≥2’ 变成 X≥m+2（因为要差至少2）。\n而 ‘落后≥2’ 变成 X≤m-1。\n中间有一块（X=m 或 m+1）会落入“差不足2”的空档，使 D_{2m+1} 比 D_{2m} 更小。",
+        type:"info",
+        hint:"偶数时中间只有“平局 X=m”；奇数时中间有“±1分差”两种（X=m 与 X=m+1）。空档更大。"
+      },
+      {
+        title:"第(3)问 · Step 7/12：用一句“边界差”写出 D_{2m}-D_{2m+1}",
+        text:"本质上：D_{2m} 比 D_{2m+1} 多吃到一些‘刚好差1或0’附近的偏移。\n可以把差归结为某个边界项：\nC(2m+1,m+1)(p^{m+1}q^m - p^m q^{m+1}) > 0。",
+        type:"info",
+        hint:"你不必死背公式，记住：差来自“中心附近的边界项”，而 p>q 让它偏向甲。"
+      },
+      {
+        title:"第(3)问 · Step 8/12：再看 D_{2m+2} 与 D_{2m}（偶数到偶数）",
+        text:"从 2m 到 2m+2，相当于再多打两球。\n由于 p>1/2（向甲漂移），‘优势累积’会使“右尾-左尾”的差更大，因此 D_{2m+2} > D_{2m}。",
+        type:"choice",
+        choices:[
+          {t:"对：多两球会放大偏移（p>1/2）导致右尾更强", ok:true, exp:"对，这就是直觉主线。"},
+          {t:"不一定，多球会更随机", ok:false, exp:"随机更大，但漂移方向固定，差值反而被放大。"},
+          {t:"只要多球，必定变小", ok:false, exp:"方向相反。"}
+        ],
+        hint:"把它想成“带漂移的随机游走”，步数越多，偏向一侧的概率差越明显。"
+      },
+      {
+        title:"第(3)问 · Step 9/12：给出一个可复用的‘比较模板’",
+        text:"比较 D 的常用模板：\n1) 先把 D_k 写成“右尾 - 左尾”。\n2) 再用配对：j 与 k-j（组合数相同）。\n3) 利用 p>q ⇒ (p/q)^{正指数} > 1 ⇒ 每个配对差为正。\n4) 奇偶差来自中心空档大小不同。",
+        type:"info",
+        hint:"这就是“遇到同类题不头疼”的核心套路。"
+      },
+      {
+        title:"第(3)问 · Step 10/12：把结论写回题目要求",
+        text:"因此对任意 m：\nD_{2m+1} < D_{2m} < D_{2m+2}\n也就是：\nP_{2m+1}-q_{2m+1} < P_{2m}-q_{2m} < P_{2m+2}-q_{2m+2}。",
+        type:"info",
+        hint:"你可以把它理解成：偶数局的“净优势”夹在相邻奇/偶之间。"
+      },
+      {
+        title:"第(3)问 · Step 11/12：一口气背下来的‘最短证明主线’",
+        text:"最短主线（背也不费力）：\n配对法 + p>q ⇒ 配对差为正 ⇒ 偶数项净优势为正且随步数增长；\n奇数项因为中心空档更大（±1分差）⇒ 比相邻偶数项更小。",
+        type:"info",
+        hint:"你弟弟如果要应试，这段主线最值钱。"
+      },
+      {
+        title:"第(3)问 · Step 12/12：完成",
+        text:"第三问完成。上方清单已更新为可复用的“套路版总结”。",
+        type:"info",
+        hint:"如果你希望更“严谨”，下一版可以把 Step7/Step8 的差分写成严格求和等式。"
+      }
+    ],
+    finish:()=>{
+      modules[2].done=true;
+      modules[2].summaryBody =
+`定义 D_k=P_k-q_k（要证：D_{2m+1}<D_{2m}<D_{2m+2}）
+表达：P_k=Pr(X≥ceil((k+2)/2))，q_k=Pr(X≤floor((k-2)/2))，X~Bin(k,p)
+配对法：把 j 与 k-j 配对，出现 C(k,j)(p^j q^{k-j}-p^{k-j}q^j)
+因 p>q 且指数差为正 ⇒ 每个配对项>0（右尾更强）
+奇偶差：偶数中心只有“平局”；奇数中心有“±1分差”空档更大 ⇒ D_{2m+1} 更小
+步数增加（2m→2m+2）漂移优势累积 ⇒ D_{2m+2} 更大`;
+    }
+  }
+];
+
+
+/** -----------------------------
+ * 运行状态
+ * ----------------------------- **/
+let currentModule = 0;  // 0,1,2
+let stepIndex = 0;
+
+function init(){
+  renderTabs();
+  renderChecklist();
+  renderStep();
+}
+
+function renderTabs(){
+  const el = document.getElementById("tabs");
+  el.innerHTML = "";
+  modules.forEach((m, i)=>{
+    const b = document.createElement("button");
+    b.className = "tab" + (i===currentModule ? " active" : "");
+    b.textContent = m.name;
+    b.onclick = ()=>{ currentModule=i; stepIndex=0; clearMsg(); renderTabs(); renderStep(); };
+    el.appendChild(b);
+  });
+}
+
+function renderChecklist(){
+  const el = document.getElementById("checklist");
+  el.innerHTML = "";
+  modules.forEach((m, idx)=>{
+    const item = document.createElement("div");
+    item.className="item";
+    const hd = document.createElement("div");
+    hd.className="hd";
+
+    const badge = document.createElement("div");
+    badge.className="badge" + (m.done ? " ok":"");
+    badge.textContent = m.done ? "✓" : (idx+1);
+
+    const title = document.createElement("div");
+    title.className="title";
+    title.textContent = m.summaryTitle;
+
+    hd.appendChild(badge);
+    hd.appendChild(title);
+
+    const body = document.createElement("div");
+    body.className="body";
+    body.textContent = m.done ? m.summaryBody : "未完成：完成该小问后，这里会自动生成“关键点+结论”（简明版）。";
+
+    item.appendChild(hd);
+    item.appendChild(body);
+
+    el.appendChild(item);
+  });
+}
+
+function renderStep(){
+  const m = modules[currentModule];
+  const steps = m.steps;
+
+  if(stepIndex<0) stepIndex=0;
+  if(stepIndex>=steps.length) stepIndex=steps.length-1;
+
+  const s = steps[stepIndex];
+
+  document.getElementById("qTitle").textContent = s.title;
+  document.getElementById("qText").textContent = s.text;
+
+  // progress
+  const pct = Math.round(((stepIndex+1)/steps.length)*100);
+  document.getElementById("progBar").style.width = pct + "%";
+  document.getElementById("stepLabel").textContent = `当前：${m.name}`;
+  document.getElementById("stepCount").textContent = `${stepIndex+1}/${steps.length}`;
+
+  // hint
+  const hintBox = document.getElementById("hintBox");
+  hintBox.textContent = s.hint || "";
+  hintBox.classList.remove("show");
+
+  // math box (optional)
+  const mathBox = document.getElementById("mathBox");
+  mathBox.style.display = "none";
+  mathBox.textContent = "";
+
+  // UI parts
+  const choices = document.getElementById("choices");
+  const inputRow = document.getElementById("inputRow");
+  const userInput = document.getElementById("userInput");
+
+  choices.style.display="none";
+  choices.innerHTML="";
+  inputRow.style.display="none";
+  userInput.value="";
+
+  clearMsg();
+
+  if(s.type==="choice"){
+    choices.style.display="flex";
+    s.choices.forEach((c)=>{
+      const btn = document.createElement("button");
+      btn.className="choice";
+      btn.textContent = c.t;
+      btn.onclick = ()=> choose(c);
+      choices.appendChild(btn);
+    });
+  }else if(s.type==="input"){
+    inputRow.style.display="flex";
+  }else if(s.type==="info"){
+    // nothing else
+  }
+
+  // show optional math highlight when useful (a few steps)
+  // keep minimal: only show when it helps memory
+  if(currentModule===0 && stepIndex===1){
+    mathBox.style.display="block";
+    mathBox.textContent = "x - (k-x) ≥ 2  ⇔  2x-k ≥ 2  ⇔  x ≥ (k+2)/2";
+  }
+  if(currentModule===1 && stepIndex===3){
+    mathBox.style.display="block";
+    mathBox.textContent = "(P4-P3)/(q4-q3) = (3p^3q)/(3pq^3) = p^2/q^2 = (p/q)^2";
+  }
+  if(currentModule===2 && stepIndex===4){
+    mathBox.style.display="block";
+    mathBox.textContent = "配对差：C(k,j)(p^j q^{k-j} - p^{k-j} q^j)\n当 p>q 且 j>k/2 ⇒ (p/q)^{2j-k} > 1 ⇒ 差为正";
   }
 }
+
+function choose(c){
+  const msg = document.getElementById("msgBox");
+  if(c.ok){
+    msg.className = "msg ok";
+    msg.textContent = "✅ " + c.exp;
+  }else{
+    msg.className = "msg bad";
+    msg.textContent = "❌ " + c.exp;
+  }
+}
+
+function submitInput(){
+  const m = modules[currentModule];
+  const s = m.steps[stepIndex];
+  const v = document.getElementById("userInput").value;
+
+  const msg = document.getElementById("msgBox");
+  if(!s.check){
+    msg.className="msg";
+    msg.textContent="（本步无需输入校验）";
+    return;
+  }
+  if(s.check(v)){
+    msg.className="msg ok";
+    msg.textContent="✅ " + (s.okMsg || "正确");
+  }else{
+    msg.className="msg bad";
+    msg.textContent="❌ " + (s.badMsg || "不对，再试一次");
+  }
+}
+
+function nextStep(){
+  const m = modules[currentModule];
+  if(stepIndex < m.steps.length - 1){
+    stepIndex++;
+    renderStep();
+  }else{
+    // finish current module
+    if(!m.done){
+      m.finish && m.finish();
+      renderChecklist();
+    }
+    // stay on last step but show completion message
+    const msg = document.getElementById("msgBox");
+    msg.className="msg ok";
+    msg.textContent="✅ 本小问已完成：上方清单已写入“关键点+结论”。可以切换到下一小问。";
+  }
+}
+
+function prevStep(){
+  stepIndex--;
+  renderStep();
+}
+
+function toggleHint(){
+  const hintBox = document.getElementById("hintBox");
+  if(!hintBox.textContent) return;
+  hintBox.classList.toggle("show");
+}
+
+function resetCurrent(){
+  stepIndex=0;
+  clearMsg();
+  renderStep();
+}
+
+function clearMsg(){
+  const msg = document.getElementById("msgBox");
+  msg.className="msg";
+  msg.textContent="";
+}
+
+function normalize(x){
+  if(!x) return "";
+  return x
+    .toLowerCase()
+    .replace(/\s+/g,"")
+    .replace(/（/g,"(").replace(/）/g,")")
+    .replace(/×/g,"*")
+    .replace(/\^/g,"^");
+}
+
+init();
 </script>
 </body>
 </html>
