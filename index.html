@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>高考数学 · 思路拆解示例</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+  margin: 0;
+  padding: 20px;
+}
+.card {
+  max-width: 720px;
+  margin: auto;
+  background: #020617;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 0 1px #1e293b;
+}
+h1 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+.step {
+  display: none;
+  animation: fadeIn 0.4s ease forwards;
+}
+.step.active {
+  display: block;
+}
+.question {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 16px;
+  margin-top: 12px;
+}
+button:active {
+  transform: scale(0.98);
+}
+.hint {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: 8px;
+}
+.formula {
+  background: #020617;
+  border: 1px solid #1e293b;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-family: monospace;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <h1>高考数学 · 思路拆解演示</h1>
+
+  <div class="step active">
+    <div class="question">
+      🎯 场景：每一球甲赢的概率是 p，乙赢是 1-p。<br><br>
+      “甲至少领先 2 分”是什么意思？
+    </div>
+    <div class="hint">👉 把“分数”翻译成“赢的局数差”</div>
+    <button onclick="next()">我知道了</button>
+  </div>
+
+  <div class="step">
+    <div class="question">
+      设打完 k 个球，甲赢了 x 个球。<br><br>
+      甲领先乙 ≥ 2 分，用不等式怎么表示？
+    </div>
+    <div class="formula">
+      x − (k − x) ≥ 2
+    </div>
+    <button onclick="next()">继续</button>
+  </div>
+
+  <div class="step">
+    <div class="question">
+      化简这个不等式，会得到什么？
+    </div>
+    <div class="formula">
+      2x ≥ k + 2
+    </div>
+    <button onclick="next()">继续</button>
+  </div>
+
+  <div class="step">
+    <div class="question">
+      注意：x 是什么？
+    </div>
+    <div class="hint">
+      👉 x 是“赢的局数”，只能取整数
+    </div>
+    <div class="formula">
+      x ≥ (k + 2) / 2 → 向上取整
+    </div>
+    <button onclick="next()">明白了</button>
+  </div>
+
+  <div class="step">
+    <div class="question">
+      举个具体例子：<br><br>
+      当 k = 3 时，甲至少要赢几局？
+    </div>
+    <div class="formula">
+      (3 + 2) / 2 = 2.5 → 最小整数是 3
+    </div>
+    <button onclick="next()">继续</button>
+  </div>
+
+  <div class="step">
+    <div class="question">
+      那“甲在 3 个球中赢 3 局”的概率是多少？
+    </div>
+    <div class="formula">
+      p × p × p = p³
+    </div>
+    <button onclick="next()">继续</button>
+  </div>
+
+  <div class="step">
+    <div class="question">
+      ⭐ 核心思想（最重要）：<br><br>
+      “首次出现甲领先 2 分”
+    </div>
+    <div class="hint">
+      必须同时满足：<br>
+      1️⃣ 第 k 球后已领先 ≥ 2 分<br>
+      2️⃣ 第 k−1 球后还没领先 ≥ 2 分
+    </div>
+    <button onclick="next()">完成</button>
+  </div>
+
+  <div class="step">
+    <div class="question">
+      🎉 恭喜！<br><br>
+      你已经掌握了这类题的“思路骨架”：
+    </div>
+    <div class="hint">
+      • 现实语言 → 数学条件<br>
+      • 找“阈值”<br>
+      • 注意整数<br>
+      • 再翻译成概率<br>
+      • 最后处理“首次发生”
+    </div>
+  </div>
+
+</div>
+
+<script>
+let index = 0;
+const steps = document.querySelectorAll(".step");
+
+function next() {
+  if (index < steps.length - 1) {
+    steps[index].classList.remove("active");
+    index++;
+    steps[index].classList.add("active");
+  }
+}
+</script>
+</body>
+</html>
